@@ -170,17 +170,18 @@ class Log:
 
 
 class LDAPClient:
-    ldap_url = None  # 'ldap://192.168.1.1' or 'ldaps://tu-servidor-ldap.com'
+    ldap_ip = None  # '192.168.1.1' or 'tu-servidor-ldap.com'
     credentials = None
     server = None
 
-    def __init__(self, url, username, password):
-        self.ldap_url = url
+    def __init__(self, target, username, password):
+        self.ldap_ip = target
         self.credentials = {
             "username": username,
             "password": password
         }
-        self.server = Server(self.ldap_url, get_info=ALL)
+        print(self.ldap_ip)
+        self.server = Server(self.ldap_ip, get_info=ALL)
     
     def get_raw(self,namespace: str):
         conn = Connection(self.server, user=self.credentials['username'], password=self.credentials['password'], auto_bind=True)
@@ -471,7 +472,7 @@ def select_protocol(handler_user:HandlerUserInput):
                 sys.exit(0)
             case _:
                 Log.message("Invalid option",message_type="failure")
-            
+
 
 def enum_ldap(handler_user:HandlerUserInput):
     # variables

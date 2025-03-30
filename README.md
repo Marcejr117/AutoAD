@@ -22,11 +22,11 @@ This tool can assist you in the process of enumerating an Active Directory envir
 ## Usage
 - Null Session example
 ```bash
-python3 autoAD.py "ldap://<IP/Domain>"
+python3 autoAD.py IP/Domain
 ```
 - Logged session example
 ```bash
-python3 autoAD.py "ldap://<IP/Domain>" -u "username" -p "password"
+python3 autoAD.py IP/Domain -u "username" -p "password"
 ```
 ### LDAP
 - View Sample
