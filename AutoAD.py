@@ -434,11 +434,11 @@ def print_table(data:dict, column1_name:str, column2_name:str):
     # Get the length of the keys and values to format the table properly
     max_key_length = max(len(key) for key in data.keys())
     max_value_length = max(len(str(value)) for value in data.values())
-    
+
     # Print the table header
     print(f"{(column1_name).ljust(max_key_length)} | {(column2_name).ljust(max_value_length)}")
     print("-" * (max_key_length + max_value_length + 3))  # Separator
-    
+
     # Print each row with keys and values
     for key, value in data.items():
         print(f"{key.ljust(max_key_length)} | {str(value).ljust(max_value_length)}")
@@ -450,16 +450,29 @@ def print_array(arr):
     print(border)
     print(f"Total records: {total}".center(50))
     print(border)
-    
     # Print each element from the array
     for item in arr:
         print(item)
-    
     print(border)
 
 #------------------------------------
 # Enumeration
 #------------------------------------
+def select_protocol(handler_user:HandlerUserInput):
+    availables_protocols = ["LDAP","SMB", "Exit"]
+    while True:
+        match handler_user.select_option(availables_protocols,back_option=False):
+            case 1:
+                clear_terminal()
+                enum_ldap(handler_user)
+            case 2:
+                clear_terminal()
+            case 3:
+                sys.exit(0)
+            case _:
+                Log.message("Invalid option",message_type="failure")
+            
+
 def enum_ldap(handler_user:HandlerUserInput):
     # variables
     args = handlerUserInput.get_args()
@@ -467,7 +480,7 @@ def enum_ldap(handler_user:HandlerUserInput):
     inUseNamespace = None
     ldapClient = None
     #menu
-    options = ["Select namespace", "Get users", "Get groups", "Get domains", "Get groups members", "Get users by groups", "Get users descriptions", "Get groups descriptions","Exit"]
+    options = ["Select namespace", "Get users", "Get groups", "Get domains", "Get groups members", "Get users by groups", "Get users descriptions", "Get groups descriptions","Back"]
     
     # Starting point
     Log.message("Enumerating LDAP: Manually")
@@ -522,21 +535,15 @@ def enum_ldap(handler_user:HandlerUserInput):
                 )
             case 9:
                 clear_terminal()
-                sys.exit(0)
+                break
             case _:
-                Log.message("Invalid option",message_type="failure")
-
-    # print(ldapClient.get_usersdescriptions(ldapClient.get_namespace()[0],ldapClient.get_usernames(ldapClient.get_namespace()[0])))
-    # print(ldapClient.get_groups(namespace=ldapClient.get_namespace()[0]))
-    # print(ldapClient.get_groups_descriptions(namespace=ldapClient.get_namespace()[0], groupnames=ldapClient.get_groups(namespace=ldapClient.get_namespace()[0])))
-    # print(ldapClient.get_group_members(groups=ldapClient.get_groups(namespace=namespace),namespace=namespace))
-    # ldapClient.get_forest_domains(namespace=inUseNamespace)
+                Log.message("Invalid option",message_type="feilure")
 
 
 if __name__ == "__main__":
     signal.signal(signal.SIGINT, def_handler) # Manage Ctrl+C
     handlerUserInput = HandlerUserInput() # Parse user input
     handlerUserInput.ask_for_ia()
-    enum_ldap(handlerUserInput)
+    select_protocol(handlerUserInput)
     # handlerIA = HandlerIA()
     # handlerIA.sendrequest()
