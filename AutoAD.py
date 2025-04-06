@@ -20,7 +20,7 @@ class HandlerIA:
     history = []
     respond = None
     def __init__(self):
-        self.promt = "hola"
+        self.promt = "Hi"
 
     def sendrequest(self, message):
         self.history.append({"role": "user", "content": message})
