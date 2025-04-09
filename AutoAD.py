@@ -859,6 +859,7 @@ def enum_ldap(handler_user:HandlerUserInput):
                 clear_terminal()
                 print_array(ldapClient.get_groups(namespace=inUseNamespace))
             case 4:
+                clear_terminal()
                 print_array(ldapClient.get_forest_domains(namespace=inUseNamespace))
             case 5:
                 clear_terminal()
